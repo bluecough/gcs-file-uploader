@@ -27,10 +27,6 @@
     <label for="PUT">Upload</label>
   </div>
   <div class="mdl-layout-spacer"></div>
-  <div>
-    <input type="radio" name="verb" value="GET">
-    <label for="GET">Download</label>
-  </div>
 
   <input class="mdl-button mdl-button--raised mdl-button--colored" type="button" value="Generate SignedURL"
     onclick="return generateSignedURL()">
@@ -40,7 +36,7 @@
   <br />
   <hr />
 
-  <a href="" id="dlurl" name="dlurl" style="color:black;"></a>
+  <!-- <a href="" id="dlurl" name="dlurl" style="color:black;"></a> -->
   </div>
 
 
@@ -62,7 +58,7 @@
   <script src="//code.jquery.com/jquery-3.1.0.min.js"></script>
   <script type="text/javascript">
 
-
+    var c = "";
 
     function upload() {
       var file = $('#selector')[0].files[0];
@@ -72,8 +68,8 @@
     function download() {
       var file = $('input[name=filename]').val();
       retrieveNewURL(file, 'GET', url => {
-        $("#dlurl").attr("href", url)
-        $("#dlurl").text(url)
+        // $("#dlurl").attr("href", url)
+        // $("#dlurl").text(url)
       })
     }
 
@@ -81,11 +77,11 @@
       file = $('input[name="gsfilename"]').val();
       action = $('input[name="verb"]:checked').val();
       const response = await fetch('/getSignedURL?filename=' + file + "&action=" + action)
-      var c = await response.text();
+      c = await response.text();
       c = c.replace(/\"/g, "")
       console.log("Got signedURL: " + c)
-      $("#dlurl").text(c)
-      $("#dlurl").attr("href", c)
+      // $("#dlurl").text(c)
+      // $("#dlurl").attr("href", c)
 
       if (action == "PUT") {
         $("#btnupload").attr("disabled", false)
@@ -94,7 +90,8 @@
     }
 
     function uploadFile(file) {
-      url = $("#dlurl").text()
+      $("#status").html('Starting Upload...')
+      url = c
       fetch(url, {
         method: 'PUT',
         body: file
