@@ -40,6 +40,13 @@
 
     var c = "";
 
+    function uuidv4() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
     function getFilename() {
       var fullPath = document.getElementById('selector').value;
       if (fullPath) {
@@ -48,9 +55,9 @@
         if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
           filename = filename.substring(1);
         }
-        return(filename);
+        return (filename);
       }
-      return(null);
+      return (null);
     }
 
     function upload() {
@@ -60,7 +67,7 @@
 
 
     async function generateSignedURL() {
-      file = getFilename();
+      file = uuidv4() + getFilename();
       action = "PUT";
       const response = await fetch('/getSignedURL?filename=' + file + "&action=" + action)
       if (!response.ok) {
