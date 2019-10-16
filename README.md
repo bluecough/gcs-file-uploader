@@ -20,5 +20,5 @@ docker build -t gcr.io/$PROJECT_NAME/uploader . && docker push gcr.io/$PROJECT_N
 Lastly, submit it to Cloud Run:
 
 ```shell
-gcloud beta run deploy uploader --image gcr.io/mcowger/uploader:latest
+gcloud beta run deploy uploader --image gcr.io/$PROJECT_NAME/uploader:latest
 ```
