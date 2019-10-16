@@ -22,33 +22,18 @@
   </div>
 
   <div class="mdl-layout-spacer"></div>
-  <div>
-    <input type="radio" name="verb" value="PUT" checked>
-    <label for="PUT">Upload</label>
-  </div>
+
   <div class="mdl-layout-spacer"></div>
-
-  <input class="mdl-button mdl-button--raised mdl-button--colored" type="button" value="Generate SignedURL"
-    onclick="return generateSignedURL()">
-
-
-  <br />
-  <br />
-  <hr />
-  </div>
-
 
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--file">
     <input type="file" id="selector">
   </div>
 
-  <div class="mdl-layout-spacer"></div>
-  <button class="mdl-button mdl-button--raised mdl-button--colored" id="btnupload" name="btnupload" onclick="upload()"
-    disabled>Upload SignedURL</button>
+  <input class="mdl-button mdl-button--raised mdl-button--colored" type="button" value="Upload" onclick="generateSignedURL()">
 
-  <div class="mdl-layout-spacer"></div>
+
   <br />
-  <hr />
+
 
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--file" id="status"></div>
 
@@ -63,22 +48,20 @@
       uploadFile(file)
     }
 
-    function download() {
-      var file = $('input[name=filename]').val();
-      retrieveNewURL(file, 'GET', url => {})
-    }
 
     async function generateSignedURL() {
       file = $('input[name="gsfilename"]').val();
-      action = $('input[name="verb"]:checked').val();
+      action = "PUT";
       const response = await fetch('/getSignedURL?filename=' + file + "&action=" + action)
-      c = await response.text();
-      c = c.replace(/\"/g, "");
-      console.log("Got signedURL: " + c);
-
-      if (action == "PUT") {
-        $("#btnupload").attr("disabled", false)
+      if (!response.ok) {
+        throw new Error('Network response for fetch was not ok.');
       }
+      c = await response.text();
+      c = c.replace(/\"/g, "")
+      console.log("Got signedURL: " + c)
+      console.log("Trying to upload")
+      upload();
+      console.log("Complete")
       return false;
     }
 
