@@ -3,7 +3,6 @@ import os
 import datetime
 from google.cloud import storage
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'service_account.json'
 
 bucketName = os.environ.get('BUCKET_NAME','YOU_FORGOT_TO_SET_THE_BUCKET_NAME_ENV_VAR')
 client = storage.Client()
