@@ -39,6 +39,7 @@
   <script type="text/javascript">
 
     var c = "";
+    var filename = "";
 
     function uuidv4() {
       return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -51,10 +52,11 @@
       var fullPath = document.getElementById('selector').value;
       if (fullPath) {
         var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
-        var filename = fullPath.substring(startIndex);
+        filename = fullPath.substring(startIndex);
         if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
           filename = filename.substring(1);
         }
+        filename = uuidv4() + filename
         return (filename);
       }
       return (null);
@@ -67,7 +69,7 @@
 
 
     async function generateSignedURL() {
-      file = uuidv4() + getFilename();
+      file = getFilename();
       action = "PUT";
       const response = await fetch('/getSignedURL?filename=' + file + "&action=" + action)
       if (!response.ok) {
@@ -92,7 +94,7 @@
         .then(response => response.text())
         .catch(error => $("#status").html(error)
         )
-        .then(response => $("#status").html('File uploaded successfully'));
+        .then(response => $("#status").html('File uploaded successfully: ' + filename));
     }
 
   </script>
