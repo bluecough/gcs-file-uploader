@@ -35,8 +35,6 @@
   <br />
   <br />
   <hr />
-
-  <!-- <a href="" id="dlurl" name="dlurl" style="color:black;"></a> -->
   </div>
 
 
@@ -67,10 +65,7 @@
 
     function download() {
       var file = $('input[name=filename]').val();
-      retrieveNewURL(file, 'GET', url => {
-        // $("#dlurl").attr("href", url)
-        // $("#dlurl").text(url)
-      })
+      retrieveNewURL(file, 'GET', url => {})
     }
 
     async function generateSignedURL() {
@@ -78,10 +73,8 @@
       action = $('input[name="verb"]:checked').val();
       const response = await fetch('/getSignedURL?filename=' + file + "&action=" + action)
       c = await response.text();
-      c = c.replace(/\"/g, "")
-      console.log("Got signedURL: " + c)
-      // $("#dlurl").text(c)
-      // $("#dlurl").attr("href", c)
+      c = c.replace(/\"/g, "");
+      console.log("Got signedURL: " + c);
 
       if (action == "PUT") {
         $("#btnupload").attr("disabled", false)
