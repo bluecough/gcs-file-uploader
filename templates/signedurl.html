@@ -16,10 +16,6 @@
 
   <div class="mdl-layout-spacer"></div>
 
-  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-    <input class="mdl-textfield__input" type="text" id="gsfilename" name="gsfilename" value="README.md">
-    <label class="mdl-textfield__label" for="gsfilename">FileName:</label>
-  </div>
 
   <div class="mdl-layout-spacer"></div>
 
@@ -29,7 +25,8 @@
     <input type="file" id="selector">
   </div>
 
-  <input class="mdl-button mdl-button--raised mdl-button--colored" type="button" value="Upload" onclick="generateSignedURL()">
+  <input class="mdl-button mdl-button--raised mdl-button--colored" type="button" value="Upload"
+    onclick="generateSignedURL()">
 
 
   <br />
@@ -43,6 +40,19 @@
 
     var c = "";
 
+    function getFilename() {
+      var fullPath = document.getElementById('selector').value;
+      if (fullPath) {
+        var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+        var filename = fullPath.substring(startIndex);
+        if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+          filename = filename.substring(1);
+        }
+        return(filename);
+      }
+      return(null);
+    }
+
     function upload() {
       var file = $('#selector')[0].files[0];
       uploadFile(file)
@@ -50,7 +60,7 @@
 
 
     async function generateSignedURL() {
-      file = $('input[name="gsfilename"]').val();
+      file = getFilename();
       action = "PUT";
       const response = await fetch('/getSignedURL?filename=' + file + "&action=" + action)
       if (!response.ok) {
@@ -59,7 +69,7 @@
       c = await response.text();
       c = c.replace(/\"/g, "")
       console.log("Got signedURL: " + c)
-      console.log("Trying to upload")
+      console.log("Trying to upload " + file)
       upload();
       console.log("Complete")
       return false;
